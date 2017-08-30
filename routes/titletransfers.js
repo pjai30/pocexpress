@@ -19,7 +19,7 @@ var address = '0x4b50b032F3b256efCDED54d78F3E78f46bC84884';
 var address2 = '0x59cAAF339bBe84750bC2BE2d2E279C486662319c';
 var key = '97f39a2e47d6c5dd0dde26b835e8db05c9e2b1af786478f5cd18453aa97da48a';
 //var key2 = '<KEY>';
-var amount = web3.toWei(.0001, "ether");
+var amount = web3.toWei(.0000001, "ether");
 var balance = web3.eth.getBalance(address);
 
 var value = web3.fromWei(balance, 'ether');
@@ -45,7 +45,7 @@ var value = web3.fromWei(balance, 'ether');
         });
 }*/
 
-/*var rawTx = {
+/*var rawTx = {gasLimitHex
     nonce: web3.toHex(web3.eth.getTransactionCount(address)),
     gasLimit: 2000000,//web3.toHex(21000),
     to: address2,
@@ -56,8 +56,8 @@ var value = web3.fromWei(balance, 'ether');
 
 var fTx = {
     nonce: web3.toHex(web3.eth.getTransactionCount(address)),
-    gasPrice: gasPriceHex,
-    gasLimit: gasLimitHex,
+    gasPrice: 30,//gasPriceHex,
+    gasLimit: 31501,//gasLimitHex,
    // data: greeter.code,
     from: address,
 	to: address2,
@@ -117,8 +117,11 @@ function createTitleTransferTransactionFromCsv1(titleTransferCsv){
 router.post('/create', function(req, res, next) {
 	
 	debug('balance ->' + balance);
+	debug('gasPrice ->' + gasPrice);
+	debug('gasPriceHex ->' + gasPriceHex);
+	debug('gasLimitHex ->' + gasLimitHex);
 	
-	debug('rawTx ->' + rawTx.value);
+	//debug('rawTx ->' + rawTx.value);
 	
 	//sendRaw(rawTx);
 
@@ -133,6 +136,8 @@ router.post('/create', function(req, res, next) {
 	txx.sign(privateKey);
 
 	var sTx =txx.serialize();
+	
+	//var txHash = web3.eth.sendTransaction({from:address, to:address2, value: web3.toWei(0.05, "ether"),gasLimit: gasLimitHex, gasPrice: gasPriceHex})
 
 	web3.eth.sendRawTransaction('0x' + sTx.toString('hex'), (err, hash) => {
 		if (err) { console.log(err); return; }
@@ -145,7 +150,7 @@ router.post('/create', function(req, res, next) {
 	 //var status = GreeterService.setGreeting(req.body.name,{ gas: 33482});
 	 //debug("status -> " + status);
      //res.json(status);
-	 //res.send(res1);
+	 //res.send(txHash);
 	 
 
 });
